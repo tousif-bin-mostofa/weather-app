@@ -1,0 +1,262 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<!--
+  index.html — The skeleton of our Weather App.
+  This file defines the structure (HTML) of the page.
+  The actual visual style comes from style.css,
+  and the behaviour/logic comes from script.js.
+-->
+<html lang="en">
+  <head>
+    <!-- Tell the browser this file uses UTF-8 characters (standard encoding) -->
+    <meta charset="UTF-8" />
+
+    <!-- Make the page scale properly on phones and tablets -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO: describes the page for search engines and browser tabs -->
+    <meta
+      name="description"
+      content="A beautiful, real-time weather app powered by OpenWeatherMap. Search any city to get live weather data instantly."
+    />
+
+    <!-- Page title shown in the browser tab -->
+    <title>WeatherNow — Live Weather App</title>
+
+    <!--
+      Import the Inter font from Google Fonts.
+      We load weights 400 (regular), 500 (medium), and 700 (bold)
+      so we have typographic flexibility throughout the UI.
+    -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Link to our stylesheet — all visual styles live there -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!--
+      The gradient background is applied to <body> via CSS.
+      Everything is centred inside this wrapper.
+    -->
+
+    <!-- ===== PAGE HEADER ===== -->
+    <header class="app-header">
+      <h1 class="app-title">WeatherNow</h1>
+      <p class="app-subtitle">Real-time weather for any city in the world</p>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="app-main">
+
+      <!-- ── SEARCH SECTION ── -->
+      <!--
+        This section holds the search bar.
+        Using <section> with aria-label helps screen readers
+        understand what this part of the page does.
+      -->
+      <section class="search-section" aria-label="City search">
+
+        <!--
+          .search-wrapper has position: relative so the suggestions
+          dropdown can be absolutely positioned directly below the bar.
+        -->
+        <div class="search-wrapper">
+
+          <div class="search-bar">
+            <!--
+              The text input where the user types a city name.
+              - aria-autocomplete="list" tells screen readers a suggestion
+                list will appear as the user types.
+              - aria-controls links this input to the suggestions list.
+              - autocomplete="off" prevents the browser's own autocomplete
+                from appearing on top of our custom dropdown.
+            -->
+            <input
+              type="text"
+              id="city-input"
+              class="search-input"
+              placeholder="Search for a city…"
+              aria-label="Enter city name"
+              aria-autocomplete="list"
+              aria-controls="suggestions-list"
+              aria-expanded="false"
+              autocomplete="off"
+              spellcheck="false"
+              role="combobox"
+            />
+
+            <!--
+              The search button. JavaScript listens for a click on this
+              to trigger the weather fetch. The SVG is a magnifying-glass icon.
+            -->
+            <button
+              id="search-btn"
+              class="search-btn"
+              aria-label="Search weather"
+            >
+              <!-- SVG magnifying-glass icon (inline so no external image needed) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+                width="20"
+                height="20"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+          </div>
+
+          <!--
+            Suggestions dropdown — hidden by default.
+            JavaScript populates this list and adds the .visible class
+            to show it when the user types in the search box.
+          -->
+          <ul
+            id="suggestions-list"
+            class="suggestions-list"
+            role="listbox"
+            aria-label="City suggestions"
+          ></ul>
+
+        </div><!-- /search-wrapper -->
+
+        <!--
+          Error / validation messages appear here.
+          JavaScript will set the text content and toggle a class
+          to show/hide this element as needed.
+        -->
+        <p id="error-message" class="error-message" aria-live="polite" role="alert"></p>
+
+      </section><!-- /search-section -->
+
+      <!-- ── WEATHER CARD ── -->
+      <!--
+        This card is hidden by default (see CSS: .weather-card { display: none }).
+        JavaScript shows it once valid weather data is received.
+
+        aria-live="polite" means screen readers announce changes
+        to this region without interrupting what they are currently saying.
+      -->
+      <section
+        id="weather-card"
+        class="weather-card"
+        aria-live="polite"
+        aria-label="Weather results"
+      >
+
+        <!-- Loading indicator — shown while the API call is in progress -->
+        <div id="loading-state" class="loading-state" aria-busy="true">
+          <div class="spinner" aria-hidden="true"></div>
+          <p class="loading-text">Fetching weather…</p>
+        </div>
+
+        <!-- Weather content — shown when data arrives successfully -->
+        <div id="weather-content" class="weather-content">
+
+          <!-- City name and country badge -->
+          <div class="location-row">
+            <h2 id="city-name" class="city-name"></h2>
+            <span id="country-code" class="country-badge"></span>
+          </div>
+
+          <!-- Weather icon from OpenWeatherMap -->
+          <div class="icon-row">
+            <img
+              id="weather-icon"
+              class="weather-icon"
+              src=""
+              alt="Weather condition icon"
+              width="100"
+              height="100"
+            />
+          </div>
+
+          <!-- Weather condition text (e.g. "Broken clouds") -->
+          <p id="condition-desc" class="condition-desc"></p>
+
+          <!-- Main temperature display -->
+          <p id="temperature" class="temperature"></p>
+
+          <!-- ── Stats grid (2 columns) ── -->
+          <!--
+            Each stat card shows a label and a value.
+            The grid layout is defined in CSS using display: grid.
+          -->
+          <div class="stats-grid">
+
+            <!-- Feels like -->
+            <div class="stat-card">
+              <!-- SVG: thermometer icon -->
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+              <span class="stat-label">Feels Like</span>
+              <span id="feels-like" class="stat-value"></span>
+            </div>
+
+            <!-- Humidity -->
+            <div class="stat-card">
+              <!-- SVG: droplet icon -->
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              <span class="stat-label">Humidity</span>
+              <span id="humidity" class="stat-value"></span>
+            </div>
+
+            <!-- Wind speed -->
+            <div class="stat-card">
+              <!-- SVG: wind icon -->
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+              <span class="stat-label">Wind Speed</span>
+              <span id="wind-speed" class="stat-value"></span>
+            </div>
+
+            <!-- Visibility -->
+            <div class="stat-card">
+              <!-- SVG: eye icon -->
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="stat-label">Visibility</span>
+              <span id="visibility" class="stat-value"></span>
+            </div>
+
+          </div><!-- /stats-grid -->
+
+        </div><!-- /weather-content -->
+
+      </section><!-- /weather-card -->
+
+    </main><!-- /app-main -->
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer">
+      <p>Powered by <a href="https://openweathermap.org" target="_blank" rel="noopener noreferrer">OpenWeatherMap</a></p>
+    </footer>
+
+    <!--
+      Load script.js at the bottom of <body> with the `defer` attribute.
+      `defer` means: download the script in parallel but only execute it
+      after the HTML has been fully parsed — so all our elements above
+      are already in the DOM when the script runs.
+    -->
+    <script src="script.js" defer></script>
+
+  </body>
+</html>
