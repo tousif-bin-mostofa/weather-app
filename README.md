@@ -7,7 +7,7 @@
 
 > A clean, responsive weather application that displays real-time weather data for any city in the world.
 
-🔗 **[Live Demo →](YOUR_GITHUB_PAGES_LINK_HERE)**
+🔗 **[Live Demo →](https://tousif-bin-mostofa.github.io/weather-app/)**
 
 ---
 
@@ -49,7 +49,7 @@
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/weather-app.git
+git clone https://github.com/tousif-bin-mostofa/weather-app.git
 ```
 
 2. Open `script.js` and replace the placeholder with your own API key:
@@ -101,4 +101,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-*Built as part of my developer portfolio — [View all my projects →](https://github.com/YOUR_USERNAME)*
+*Built as part of my developer portfolio — [View all my projects →](https://github.com/tousif-bin-mostofa)*
