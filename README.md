@@ -13,7 +13,7 @@
 
 ## 📸 Screenshot
 
-![Weather App Screenshot](screenshots/preview.png)
+![Weather App Screenshot](screenshots/preview.PNG)
 
 ---
 
