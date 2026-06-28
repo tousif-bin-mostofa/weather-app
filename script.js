@@ -34,7 +34,8 @@
 ───────────────────────────────────────────── */
 
 // Replace 'YOUR_API_KEY_HERE' with your free API key from https://openweathermap.org/api
-const API_KEY = 'ffedd8052fd12a1bf2f06c880f7d12da';
+// API_KEY is loaded from config.js (excluded from GitHub for security)
+// To run this project locally, create a config.js file with: const API_KEY = 'YOUR_API_KEY_HERE';
 
 /*
   The OpenWeatherMap Current Weather endpoint.
@@ -419,8 +420,8 @@ function showSuggestions(cities) {
       This lets us retrieve the exact coordinates when the user selects this
       row via mouse click OR keyboard — without needing a separate data array.
     */
-    li.dataset.lat  = city.lat;
-    li.dataset.lon  = city.lon;
+    li.dataset.lat = city.lat;
+    li.dataset.lon = city.lon;
     li.dataset.name = city.name;
 
     // SVG location-pin icon — purely decorative (aria-hidden)
@@ -613,8 +614,8 @@ cityInput.addEventListener('keydown', (event) => {
       */
       selectSuggestion({
         name: el.dataset.name,
-        lat:  parseFloat(el.dataset.lat),
-        lon:  parseFloat(el.dataset.lon),
+        lat: parseFloat(el.dataset.lat),
+        lon: parseFloat(el.dataset.lon),
       });
     } else {
       // Otherwise, run a normal name-based search
