@@ -33,10 +33,8 @@
    1. CONFIGURATION
 ───────────────────────────────────────────── */
 
-// Replace 'YOUR_API_KEY_HERE' with your free API key from https://openweathermap.org/api
-// API_KEY is loaded from config.js (excluded from GitHub for security)
-// To run this project locally, create a config.js file with: const API_KEY = 'YOUR_API_KEY_HERE';
-
+// Replace 'YOUR_API_KEY_HERE' with your free API key from https://openweathermap.org/api const API_KEY = 'YOUR_NEW_KEY_HERE';
+const API_KEY = 'ffedd8052fd12a1bf2f06c880f7d12da';
 /*
   The OpenWeatherMap Current Weather endpoint.
   We will append the city name and API key when we make a request.
